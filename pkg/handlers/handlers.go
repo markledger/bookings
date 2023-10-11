@@ -1,10 +1,12 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/markledger/bookings-golang/pkg/config"
 	"github.com/markledger/bookings-golang/pkg/models"
 	"github.com/markledger/bookings-golang/pkg/render"
+	"log"
 	"net/http"
 )
 
@@ -69,6 +71,27 @@ func (m *Repository) Majors(w http.ResponseWriter, r *http.Request) {
 // Availability renders the search availability page
 func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, r, "search-availability.page.tmpl", &models.TemplateData{})
+}
+
+type jsonResponse struct {
+	OK      bool   `json:"ok"`
+	Message string `json:"message"`
+}
+
+func (m *Repository) PostAvailabilityAjax(w http.ResponseWriter, r *http.Request) {
+	resp := jsonResponse{
+		OK:      false,
+		Message: "Available",
+	}
+
+	out, err := json.MarshalIndent(resp, "", "     ")
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
 }
 
 // Availability renders the search availability page
