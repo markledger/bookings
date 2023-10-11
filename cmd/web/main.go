@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/alexedwards/scs/v2"
-	"github.com/markledger/bookings-golang/pkg/config"
-	"github.com/markledger/bookings-golang/pkg/handlers"
-	"github.com/markledger/bookings-golang/pkg/render"
+	"github.com/markledger/bookings-golang/internal/config"
+	"github.com/markledger/bookings-golang/internal/handlers"
+	"github.com/markledger/bookings-golang/internal/render"
 	"log"
 	"net/http"
 	"time"
