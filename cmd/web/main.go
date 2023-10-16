@@ -1,10 +1,12 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"github.com/alexedwards/scs/v2"
 	"github.com/markledger/bookings-golang/internal/config"
 	"github.com/markledger/bookings-golang/internal/handlers"
+	"github.com/markledger/bookings-golang/internal/models"
 	"github.com/markledger/bookings-golang/internal/render"
 	"log"
 	"net/http"
@@ -18,6 +20,10 @@ var session *scs.SessionManager
 
 // main is the main function
 func main() {
+
+	//What am I going to put in session
+	gob.Register(models.Reservation{})
+
 	// change this to true when in production
 	app.InProduction = false
 
