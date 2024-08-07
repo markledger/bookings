@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/justinas/nosurf"
-	"github.com/markledger/bookings-golang/internal/config"
-	"github.com/markledger/bookings-golang/internal/models"
+	"github.com/markledger/bookings/internal/config"
+	"github.com/markledger/bookings/internal/models"
 	"html/template"
 	"log"
 	"net/http"
@@ -39,7 +39,7 @@ func RenderTemplate(w http.ResponseWriter, r *http.Request, tmpl string, td *mod
 	} else {
 		tc, _ = CreateTemplateCache()
 	}
-
+	fmt.Printf("%v", tc)
 	t, ok := tc[tmpl]
 	if !ok {
 		log.Fatal("Could not get template from template cache")

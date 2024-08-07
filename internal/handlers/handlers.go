@@ -3,10 +3,10 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/markledger/bookings-golang/internal/config"
-	"github.com/markledger/bookings-golang/internal/forms"
-	"github.com/markledger/bookings-golang/internal/models"
-	"github.com/markledger/bookings-golang/internal/render"
+	"github.com/markledger/bookings/internal/config"
+	"github.com/markledger/bookings/internal/forms"
+	"github.com/markledger/bookings/internal/models"
+	"github.com/markledger/bookings/internal/render"
 	"log"
 	"net/http"
 )

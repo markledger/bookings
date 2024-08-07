@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/markledger/bookings-golang/internal/config"
-	"github.com/markledger/bookings-golang/internal/handlers"
+	"github.com/markledger/bookings/internal/config"
+	"github.com/markledger/bookings/internal/handlers"
 	"net/http"
 )
 
