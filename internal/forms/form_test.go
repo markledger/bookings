@@ -66,19 +66,30 @@ func TestForm_Has(t *testing.T) {
 }
 
 func TestForm_MinLength(t *testing.T) {
-	r := httptest.NewRequest("POST", "/", nil)
-	form := New(r.PostForm)
 
 	postedData := url.Values{}
 	postedData.Set("name", "John")
 	postedData.Set("number", "42")
 
-	r.PostForm = postedData
-	form = New(r.PostForm)
+	form := New(postedData)
 	form.MinLength("name", 5)
 	if form.Valid() {
+		t.Error("Field length reporting as too short when length is valid")
+	}
+
+	if form.Errors.Get("name") == "" {
+		t.Error("Field should contain min length error message")
+	}
+
+	form.MinLength("number", 2)
+	if !form.Valid() && !form.MinLength("number", 2) {
 		t.Error("Form does not have required fields when it does")
 	}
+
+	if form.Errors.Get("number") != "" {
+		t.Error("Field should not contain min length error message")
+	}
+
 }
 
 func TestForm_IsEmail(t *testing.T) {
@@ -107,4 +118,15 @@ func TestForm_IsEmail(t *testing.T) {
 	if form.Valid() {
 		t.Error("Form reported email as valid when it was invalid")
 	}
+
+	//ther gmail trick
+	postedData = url.Values{}
+	postedData.Add("email", "fatherandson+cat@gmail.com")
+
+	form = New(postedData)
+	form.IsEmail("email")
+	if !form.Valid() {
+		t.Error("Form reported email as valid when it was invalid")
+	}
+
 }

@@ -1,0 +1,16 @@
+mode: set
+github.com/markledger/bookings/internal/forms/errors.go:6.51,8.2 1 1
+github.com/markledger/bookings/internal/forms/errors.go:11.42,13.27 2 1
+github.com/markledger/bookings/internal/forms/errors.go:13.27,15.3 1 1
+github.com/markledger/bookings/internal/forms/errors.go:16.2,16.23 1 1
+github.com/markledger/bookings/internal/forms/forms.go:17.29,19.2 1 1
+github.com/markledger/bookings/internal/forms/forms.go:22.33,27.2 1 1
+github.com/markledger/bookings/internal/forms/forms.go:30.43,31.31 1 1
+github.com/markledger/bookings/internal/forms/forms.go:31.31,33.37 2 1
+github.com/markledger/bookings/internal/forms/forms.go:33.37,35.4 1 1
+github.com/markledger/bookings/internal/forms/forms.go:39.39,43.2 2 1
+github.com/markledger/bookings/internal/forms/forms.go:46.57,48.21 2 1
+github.com/markledger/bookings/internal/forms/forms.go:48.21,51.3 2 1
+github.com/markledger/bookings/internal/forms/forms.go:52.2,52.13 1 1
+github.com/markledger/bookings/internal/forms/forms.go:56.38,57.40 1 1
+github.com/markledger/bookings/internal/forms/forms.go:57.40,59.3 1 1
