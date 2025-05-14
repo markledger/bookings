@@ -4,10 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/markledger/bookings/internal/config"
+	"github.com/markledger/bookings/internal/driver"
 	"github.com/markledger/bookings/internal/forms"
 	"github.com/markledger/bookings/internal/helpers"
 	"github.com/markledger/bookings/internal/models"
 	"github.com/markledger/bookings/internal/render"
+	"github.com/markledger/bookings/internal/repository"
+	"github.com/markledger/bookings/internal/repository/dbrepo"
 	"net/http"
 )
 
@@ -17,12 +20,14 @@ var Repo *Repository
 // Repository is the repository type
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepository
 }
 
 // NewRepo creates a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 

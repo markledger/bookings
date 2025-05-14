@@ -2,6 +2,9 @@ package driver
 
 import (
 	"database/sql"
+	_ "github.com/jackc/pgx/v5"
+	_ "github.com/jackc/pgx/v5/pgconn"
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"time"
 )
 
@@ -15,8 +18,9 @@ const maxOpenDbConns = 10
 const maxIdleDbConns = 5
 const maxLifetimeDbConns = 5 * time.Minute
 
-func Connect(dsn string) (*DB, error) {
+func ConnectSQL(dsn string) (*DB, error) {
 	d, err := NewDatabase(dsn)
+	
 	if err != nil {
 		panic(err)
 	}
