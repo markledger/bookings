@@ -1,5 +1,9 @@
 package repository
 
+import "github.com/markledger/bookings/internal/models"
+
 type DatabaseRepository interface {
-	//AllUsers()
+	AllUsers() bool
+
+	InsertReservation(reservation models.Reservation) error
 }

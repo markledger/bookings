@@ -33,9 +33,7 @@ type Restriction struct {
 // Reservations is the reservation model
 type Reservation struct {
 	ID        int
-	FirstName string
-	LastName  string
-	Email     string
+	UserID    int
 	Phone     string
 	StartDate time.Time
 	EndDate   time.Time
