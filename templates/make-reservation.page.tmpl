@@ -8,7 +8,7 @@
 
                 {{$res := index .Data "reservation"}}
                 {{$rooms := index .Data "rooms"}}
-                <form method="post" action="" class="" novalidate>
+                <form method="post" action="/make-reservation" class="" novalidate>
                     <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
 
         <input type="hidden" name="user_id" value="1">
@@ -21,32 +21,33 @@
                         <input class="form-control {{with .Form.Errors.Get "phone"}} is-invalid {{end}}" id="phone"
                                autocomplete="off" type='email'
                                name='phone' value="{{$res.Phone}}" required>
+
+
                     </div>
 
-                     <div class="col">
-                            <div class="row" id="reservation-dates">
-                                <div class="col-md-6">
-                                    <input required class="form-control" type="text" name="start_date" placeholder="Arrival">
-                                </div>
-                                <div class="col-md-6">
-                                    <input required class="form-control" type="text" name="end_date" placeholder="Departure">
-                                </div>
-                            </div>
+                    <div id="reservation-dates">
+                        <div class="form-group">
+
+                             <label for="start_date">Arrival Date:</label>
+                             <input required class="form-control" type="text" name="start_date" placeholder="Arrival">
+
                         </div>
+                        <div class="form-group">
+                             <label for="end_date">Departure Date:</label>
+                             <input required class="form-control" type="text" name="end_date" placeholder="Departure">
+
+                        </div>
+                    </div>
 
                     <div class="form-group">
-                        <label for="phone">Room:</label>
-                        {{with .Form.Errors.Get "room"}}
-                            <label class="text-danger">{{.}}</label>
-                        {{end}}
-                        <select name="room_id" id="room">
-                            {{$rooms}}
+                        <label for="room">Room:</label>
+                        <select class="form-select form-control" name="room_id" id="room">
                            {{ range $key, $value := $rooms }}
                                <option value="{{$value.ID}}">{{ $value.RoomName }}</option>
                             {{ end }}
                         </select>
+                     </div>
 
-                    </div>
                     <hr>
                     <input type="submit" class="btn btn-primary" value="Make Reservation">
                 </form>

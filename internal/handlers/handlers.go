@@ -11,6 +11,7 @@ import (
 	"github.com/markledger/bookings/internal/render"
 	"github.com/markledger/bookings/internal/repository"
 	"github.com/markledger/bookings/internal/repository/dbrepo"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -110,10 +111,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	form := forms.New(r.PostForm)
-
-	form.Required("first_name", "last_name", "email")
-	form.MinLength("first_name", 3)
-	form.IsEmail("email")
+	form.MinLength("phone", 11)
 
 	if !form.Valid() {
 		data := make(map[string]interface{})
@@ -124,7 +122,26 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
+	log.Println("BOBO")
+	log.Println("reservation", reservation)
+	reservationID, err := m.DB.InsertReservation(reservation)
+	if err != nil {
+		helpers.ServerError(w, err)
+	}
 
+	restriction := models.RoomRestriction{
+		StartDate:     startDate,
+		EndDate:       endDate,
+		RoomID:        roomID,
+		ReservationID: reservationID,
+		RestrictionID: 1,
+		CreatedAt:     time.Time{},
+		UpdatedAt:     time.Time{},
+		Room:          models.Room{},
+		Reservation:   models.Reservation{},
+		Restriction:   models.Restriction{},
+	}
+	log.Println("restriction", restriction)
 	m.App.Session.Put(r.Context(), "reservation", reservation)
 	http.Redirect(w, r, "reservation-summary", http.StatusSeeOther)
 }

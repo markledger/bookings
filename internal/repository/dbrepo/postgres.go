@@ -34,7 +34,8 @@ func (pg *postgresDBRepo) GetRooms() ([]models.Room, error) {
 	return rooms, nil
 }
 
-func (pg *postgresDBRepo) InsertReservation(reservation models.Reservation) error {
+func (pg *postgresDBRepo) InsertReservation(reservation models.Reservation) (int, error) {
+	var newID int
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 	sql := `INSERT INTO reservations 
@@ -42,20 +43,18 @@ func (pg *postgresDBRepo) InsertReservation(reservation models.Reservation) erro
     		VALUES 
     		    ($1, $2, $3, $4, $5, $6, $7)`
 
-	_, err := pg.DB.ExecContext(ctx, sql,
+	err := pg.DB.QueryRowContext(ctx, sql,
 		reservation.UserID,
 		reservation.Phone,
 		reservation.StartDate,
 		reservation.EndDate,
 		reservation.RoomID,
-		reservation.CreatedAt,
-		reservation.UpdatedAt,
 		time.Now(),
-		time.Now())
+		time.Now()).Scan(&newID)
 
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	return nil
+	return newID, nil
 }
