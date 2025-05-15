@@ -12,6 +12,8 @@ import (
 	"github.com/markledger/bookings/internal/repository"
 	"github.com/markledger/bookings/internal/repository/dbrepo"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // Repo the repository used by the handlers
@@ -59,9 +61,13 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 // Reservation renders the make a reservation page and displays form
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 	var emptyReservation models.Reservation
+	rooms, err := m.DB.GetRooms()
+	if err != nil {
+		helpers.ServerError(w, err)
+	}
 	data := make(map[string]interface{})
 	data["reservation"] = emptyReservation
-
+	data["rooms"] = rooms
 	render.Template(w, r, "make-reservation.page.tmpl", &models.TemplateData{
 		Form: forms.New(nil),
 		Data: data,
@@ -77,11 +83,30 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// 01/02 03:04:05PM '06 -0700
+	dateLayout := "2006-01-02"
+
+	startDate, err := time.Parse(dateLayout, r.Form.Get("start_date"))
+	if err != nil {
+		helpers.ServerError(w, err)
+	}
+
+	endDate, err := time.Parse(dateLayout, r.Form.Get("end_date"))
+	if err != nil {
+		helpers.ServerError(w, err)
+	}
+
+	roomID, err := strconv.Atoi(r.Form.Get("room_id"))
+	if err != nil {
+		helpers.ServerError(w, err)
+	}
+
 	reservation := models.Reservation{
-		FirstName: r.Form.Get("first_name"),
-		LastName:  r.Form.Get("last_name"),
-		Email:     r.Form.Get("email"),
+		UserID:    1,
 		Phone:     r.Form.Get("phone"),
+		StartDate: startDate,
+		EndDate:   endDate,
+		RoomID:    roomID,
 	}
 
 	form := forms.New(r.PostForm)

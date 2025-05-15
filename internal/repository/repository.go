@@ -6,4 +6,6 @@ type DatabaseRepository interface {
 	AllUsers() bool
 
 	InsertReservation(reservation models.Reservation) error
+
+	GetRooms() ([]models.Room, error)
 }
