@@ -11,10 +11,7 @@ import (
 	"github.com/markledger/bookings/internal/render"
 	"github.com/markledger/bookings/internal/repository"
 	"github.com/markledger/bookings/internal/repository/dbrepo"
-	"log"
 	"net/http"
-	"strconv"
-	"time"
 )
 
 // Repo the repository used by the handlers
@@ -73,77 +70,6 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 		Form: forms.New(nil),
 		Data: data,
 	})
-}
-
-// PostReservation handles the posting of a reservation form
-func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-
-	if err != nil {
-		helpers.ServerError(w, err)
-		return
-	}
-
-	// 01/02 03:04:05PM '06 -0700
-	dateLayout := "2006-01-02"
-
-	startDate, err := time.Parse(dateLayout, r.Form.Get("start_date"))
-	if err != nil {
-		helpers.ServerError(w, err)
-	}
-
-	endDate, err := time.Parse(dateLayout, r.Form.Get("end_date"))
-	if err != nil {
-		helpers.ServerError(w, err)
-	}
-
-	roomID, err := strconv.Atoi(r.Form.Get("room_id"))
-	if err != nil {
-		helpers.ServerError(w, err)
-	}
-
-	reservation := models.Reservation{
-		UserID:    1,
-		Phone:     r.Form.Get("phone"),
-		StartDate: startDate,
-		EndDate:   endDate,
-		RoomID:    roomID,
-	}
-
-	form := forms.New(r.PostForm)
-	form.MinLength("phone", 11)
-
-	if !form.Valid() {
-		data := make(map[string]interface{})
-		data["reservation"] = reservation
-		render.Template(w, r, "make-reservation.page.tmpl", &models.TemplateData{
-			Form: form,
-			Data: data,
-		})
-		return
-	}
-	log.Println("BOBO")
-	log.Println("reservation", reservation)
-	reservationID, err := m.DB.InsertReservation(reservation)
-	if err != nil {
-		helpers.ServerError(w, err)
-	}
-
-	restriction := models.RoomRestriction{
-		StartDate:     startDate,
-		EndDate:       endDate,
-		RoomID:        roomID,
-		ReservationID: reservationID,
-		RestrictionID: 1,
-		CreatedAt:     time.Time{},
-		UpdatedAt:     time.Time{},
-		Room:          models.Room{},
-		Reservation:   models.Reservation{},
-		Restriction:   models.Restriction{},
-	}
-	log.Println("restriction", restriction)
-	m.App.Session.Put(r.Context(), "reservation", reservation)
-	http.Redirect(w, r, "reservation-summary", http.StatusSeeOther)
 }
 
 // Generals renders the room page

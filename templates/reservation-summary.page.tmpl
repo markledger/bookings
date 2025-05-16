@@ -2,6 +2,7 @@
 
 {{define "content"}}
 {{$reservation := index .Data "reservation"}}
+
 <div class="container">
     <div class="row">
         <div class="col">
@@ -18,16 +19,17 @@
                 <tbody>
                 <tr>
                     <td>Name</td>
-                    <td>{{$reservation.FirstName}} {{$reservation.LastName}}</td>
+                    <td>Jean-Luc Picard</td>
                 </tr>
                 <tr>
-                <td>Arrival</td><td>Arrival</td>
+                <td>Arrival</td>
+                <td>{{$reservation.StartDate}}</td>
                 </tr>
                 <tr>
-                <td>Departure</td> <td>Departure</td>
+                <td>Departure</td> <td> {{$reservation.EndDate}}</td>
                 </tr>
                 <tr>
-                <td>Email</td> <td>{{$reservation.Email}}</td>
+                <td>Room</td> <td>{{.Data}}</td>
                 </tr>
                 <tr>
                 <td>Phone</td><td>{{$reservation.Phone}}</td>

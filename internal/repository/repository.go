@@ -8,4 +8,6 @@ type DatabaseRepository interface {
 	InsertReservation(reservation models.Reservation) (int, error)
 
 	GetRooms() ([]models.Room, error)
+
+	InsertRoomRestriction(room models.RoomRestriction) error
 }

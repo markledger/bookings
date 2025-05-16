@@ -50,6 +50,7 @@ func main() {
 func run() (*driver.DB, error) {
 	//What am I going to put in session
 	gob.Register(models.Reservation{})
+	gob.Register(models.Room{})
 
 	// change this to true when in production
 	app.InProduction = false
